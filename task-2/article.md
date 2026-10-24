@@ -1,0 +1,205 @@
+# Build and publish a focused Thally documentation site
+
+This article walks through a small, source-controlled documentation site built with Thally. The example uses a product guide as its subject, but the steps work for other developer tools too.
+
+## What you will build
+
+You will create a Thally docs project, organize a home page and task-based guides, validate the site locally, connect its GitHub repository to Thally Cloud, and publish it.
+
+## Prerequisites
+
+| Requirement | Purpose |
+| --- | --- |
+| A Thally account | Creates and publishes the documentation site. |
+| A GitHub account and Git | Stores the site source and lets Thally sync it. |
+| Node.js and npm | Runs Thally’s scaffold, checks, and local preview. |
+| A short site outline | Keeps the first release focused on a home page, quickstart, practical guide, and article. |
+
+Decide whether the source repository should be public or private before connecting it. Do not commit credentials, tokens, customer data, or unpublished product details to a public repository.
+
+## Understand the publishing path
+
+Thally’s [Cloud-first quickstart](https://docs.thally.io/quickstart) can create the source repository from the dashboard and recommends an **All repositories** GitHub App grant for that flow. If you need access limited to one repository, scaffold locally and connect that existing repository instead. Grant the Thally app access only to the documentation repository when GitHub presents a repository-selection screen.
+
+```mermaid
+flowchart LR
+  A[Thally CLI scaffold] --> B[Write MDX and configure navigation]
+  B --> C[Check, build, and preview locally]
+  C --> D[Push the docs repository]
+  D --> E[Connect the selected repository in Thally Cloud]
+  E --> F[Review and publish the site]
+```
+
+## Scaffold the project
+
+From the parent directory where you want the repository, run Thally’s supported project generator:
+
+```bash
+npx --yes create-thally-docs@latest production-agent-guide-docs --yes --install
+cd production-agent-guide-docs
+```
+
+The `--yes` flags accept the generator defaults and install dependencies. The scaffold creates the Thally project, initializes Git, and shows where to write content:
+
+| Path | What you configure there |
+| --- | --- |
+| `src/content/` | MDX pages. |
+| `docs.json` | Navigation and portable documentation features. |
+| `src/data/site.ts` | Site name, description, repository link, and brand defaults. |
+
+The home page is `src/content/introduction.mdx`. Keep it at that path and put other pages in useful subdirectories, for example `src/content/task-1/quickstart.mdx`.
+
+Create the source repository under your GitHub account. For example, to publish a public docs source repository after reviewing its contents:
+
+```bash
+gh repo create acme/production-agent-guide-docs \
+  --public \
+  --source=. \
+  --remote=origin \
+  --push
+```
+
+Use `--private` if the source should remain private and your Thally plan supports connecting it. The `gh` command creates the remote, adds `origin`, and pushes the scaffold’s current branch.
+
+## Configure the site
+
+Edit `src/data/site.ts` to give the site a clear identity and working links. Keep the existing `siteConfig` shape and change its values:
+
+```ts
+name: 'Production Agent Guide Docs',
+description: 'Practical documentation for installing, configuring, and using Production Agent Guide.',
+repoUrl: 'https://github.com/acme/production-agent-guide-docs',
+links: [
+  { label: 'Quickstart', href: '/task-1/quickstart' },
+  { label: 'Source repository', href: 'https://github.com/acme/production-agent-guide-docs' },
+],
+```
+
+In `docs.json`, remove unused example navigation and make every authored page reachable. A concise structure might look like this:
+
+```json
+{
+  "theme": "default",
+  "navbar": {
+    "primary": {
+      "label": "Quickstart",
+      "href": "/task-1/quickstart"
+    }
+  },
+  "tabs": [
+    {
+      "tab": "Guide",
+      "groups": [
+        {
+          "group": "Start here",
+          "pages": [
+            "introduction",
+            "task-1/quickstart",
+            "task-1/practical-guide"
+          ]
+        },
+        {
+          "group": "Build this site",
+          "pages": ["task-2/article"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+The page IDs are paths below `src/content/` without the `.mdx` suffix. Keep the built-in theme to avoid unnecessary visual configuration in a small first release.
+
+## Write the pages
+
+Every MDX page needs a `title` and `description` in YAML frontmatter. The frontmatter title is displayed by the docs layout, so begin the body with useful context rather than repeating the title as an H1:
+
+```mdx
+---
+title: Install and activate the guide
+description: Install the package and create a project harness.
+---
+
+Run the following commands from your project root.
+```
+
+Write the minimum set that helps a new reader succeed:
+
+1. An introduction that explains the product, audience, and next step.
+2. A quickstart with prerequisites, runnable commands, expected results, and a next step.
+3. One practical guide that covers a meaningful workflow, examples, and troubleshooting.
+4. The implementation article that explains the site setup and publishing path.
+
+For Mermaid diagrams, use Thally’s native component in MDX:
+
+```mdx
+<Mermaid>{`
+flowchart LR
+  A[Install] --> B[Configure]
+  B --> C[Publish]
+`}</Mermaid>
+```
+
+This template-literal child is the supported component form. In a standalone Markdown article, use a normal fenced `mermaid` block so GitHub-compatible renderers can display it.
+
+## Validate and preview locally
+
+Run the Thally content checker, TypeScript check, and production build:
+
+```bash
+npx --yes @thallylabs/cli@latest check --ci .
+npm run typecheck
+npm run build
+```
+
+The checker catches issues such as missing frontmatter, broken internal links, and pages that are not registered in navigation. Fix findings before publishing.
+
+Start the local preview:
+
+```bash
+npm run dev
+```
+
+Open the URL printed by the dev server. Check the home page, each navigation item, code examples, internal and external links, and the Mermaid diagram. Inspect both a wide desktop window and a narrow mobile viewport.
+
+## Connect and publish with Thally Cloud
+
+1. Open your Thally dashboard and create a site.
+2. Choose the existing GitHub repository created above as the documentation source.
+3. If prompted to install or authorize the Thally GitHub App, select only the docs repository when the permission screen offers repository selection.
+4. Skip Product sources and Knowledge surfaces for a focused documentation site; they are optional for this workflow.
+5. Review the site name, source, navigation, and public content in the final review step, then publish.
+
+After publishing, open the public site in a signed-out or private browser window. Confirm that the home page and each assessment page load, navigation works, and the published source corresponds to the reviewed commit. For later edits, commit and push to the connected repository, then follow the sync and publish status shown in Thally Cloud.
+
+## Troubleshooting
+
+| Symptom | Likely cause | Resolution |
+| --- | --- | --- |
+| A page is missing from navigation | Its path is missing or misspelled in `docs.json`. | Match the page ID to the file path below `src/content/`, without the `.mdx` suffix. |
+| The checker reports an orphan page | A sample or authored MDX file is not in navigation. | Add the page to `docs.json` or remove the unused sample page. |
+| Mermaid displays as code or fails to compile | The MDX component wrapper is missing or its template literal is malformed. | Use the component example above and check the opening and closing template literal marks. |
+| npm fails with a disk-space error | The scaffold and framework dependencies need local disk space. | Check free space, then retry the install after making room; keep the lockfile so future installs are reproducible. |
+| The connected site does not show a pushed edit | The source change is not yet published by the site workflow. | Confirm the commit reached the connected branch, then follow the sync and publish status in Thally Cloud. |
+
+## Obstacles and how this build handled them
+
+The Cloud-first creation path is convenient, but its documented GitHub permission choice requests access to all repositories. This assessment needed a one-repository scope, so it used the CLI scaffold, created the source repository separately, and connected that repository in the dashboard. If the authorization UI does not offer a repository-only selection, stop and resolve the permission scope before continuing.
+
+The scaffold also includes sample pages and navigation for a general docs product. Leaving those examples in place would make the site feel unfinished and could leave unused pages outside the intended navigation. Remove the sample pages you do not use and keep the `docs.json` page list aligned with the authored files.
+
+During the sample-project check, `npx pag help` listed `init`, `doctor`, `skills`, `snippet`, and `help`, but did not list `task`. The published README nevertheless documents `npx pag task`; the command worked when given a date-prefixed ID. This site’s quickstart therefore treats task-note creation as optional and points readers to the README and ID format rather than making it a setup prerequisite.
+
+The production build completed, but the scaffold also logged that embeddings generation was skipped because a module crossed a Client Component boundary, and Next.js warned that the middleware convention is deprecated. Those messages did not block the docs build. I left the Thally-owned runtime files as generated and recorded the warnings for follow-up against a future starter release.
+
+## Further reading
+
+- [Thally quickstart](https://docs.thally.io/quickstart)
+- [Thally project structure](https://docs.thally.io/guides/project-structure)
+- [Thally writing content](https://docs.thally.io/guides/writing-content)
+- [Thally navigation](https://docs.thally.io/guides/configuring-navigation)
+- [Thally branding and theming](https://docs.thally.io/guides/branding-and-theming)
+- [Thally Mermaid component](https://docs.thally.io/components/mermaid)
+- [Thally CI checks](https://docs.thally.io/guides/ci-checks)
+- [Production Agent Guide on npm](https://www.npmjs.com/package/production-agent-guide)
+- [Production Agent Guide source on GitHub](https://github.com/toybz-creator/agent-guide/tree/main)

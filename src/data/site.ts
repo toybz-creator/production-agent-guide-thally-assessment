@@ -160,13 +160,15 @@ const brandPresets: Record<BrandPresetKey, BrandConfig> = {
 const brandPreset: BrandPresetKey = 'primary'
 
 export const siteConfig: SiteConfig = {
-  name: 'Production Agent Guide Thally Assessment',
+  name: 'Production Agent Guide',
   description:
-    'Documentation for Production Agent Guide Thally Assessment.',
-  repoUrl: '',
+    'Practical documentation for installing, configuring, and using Production Agent Guide.',
+  repoUrl: 'https://github.com/toybz-creator/production-agent-guide-thally-assessment',
   links: [
-    { label: 'Get started', href: '/quickstart' },
-    { label: 'Changelog', href: '/changelog' },
+    { label: 'Install the guide', href: '/task-1/quickstart' },
+    { label: 'npm package', href: 'https://www.npmjs.com/package/production-agent-guide' },
+    { label: 'Source repository', href: 'https://github.com/toybz-creator/production-agent-guide-thally-assessment' },
+    { label: 'Product source', href: 'https://github.com/toybz-creator/agent-guide' },
   ],
   brand: brandPresets[brandPreset],
   brandPreset,

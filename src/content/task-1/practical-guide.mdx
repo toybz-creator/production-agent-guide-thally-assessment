@@ -1,0 +1,86 @@
+---
+title: Customize the project harness
+description: Tailor the guide’s durable project context, decisions, and task workflow without changing the installed package.
+---
+
+The harness is the part of Production Agent Guide that belongs to your project. Use it to keep decisions and operating context close to the codebase while allowing the reusable package to receive updates.
+
+## Keep the package and project context separate
+
+Treat the installed package as the shared rule library and your project’s `harness/` directory as the local extension point:
+
+| Put this in… | Use it for… |
+| --- | --- |
+| `node_modules/production-agent-guide/` | The reusable package instructions and rulebooks. Do not make project-specific edits here. |
+| `harness/verdicts.md` | Project decisions, preferences, conflict resolutions, and the required QA profile. |
+| Other files in `harness/` | Product, architecture, constraints, deployment, workflow, history, and other verified project context. |
+| `harness/skills.md` and `harness/skills/` | Project-specific agent workflows and their detailed instructions. |
+
+This boundary makes package upgrades easier to review: update the package as a dependency, and keep your product decisions in source control beside your code.
+
+## Record the decisions that change agent behavior
+
+Open `harness/verdicts.md` and replace unset values with choices your team can explain and maintain. For example, decide:
+
+- Whether the guide should be advisory, standard, or strict for this project.
+- Whether web research is optional or expected for framework and library changes.
+- Which QA layers must run for each kind of change, and the commands and environment required.
+- Whether manual browser or device checks are part of the acceptance bar.
+- Which integrations, tooling choices, and architecture constraints are already settled.
+
+Use a real command from your repository for each required check. Do not copy an example command that your project does not implement. When a team decision changes, update the verdicts file so later tasks do not rediscover or contradict it.
+
+## Synchronize the harness with the repository
+
+After initialization, send your coding agent:
+
+```text
+pag-synchronise-project
+```
+
+The synchronization workflow compares the harness with the current project and updates relevant living documents from verified product behavior, code, architecture, infrastructure, plans, and known gaps. Use it again after substantial work done outside the agent workflow.
+
+Review the resulting diff. Keep facts that can be checked in the repository, and correct assumptions before they become durable project context. Synchronization documents the project; it does not replace tests, code review, or operational checks.
+
+## Create and complete a task record
+
+For a concrete implementation task, create a planning note with a date-prefixed kebab-case ID:
+
+```bash
+npx pag task --id 20261024-add-export --title "Add data export"
+```
+
+The command creates:
+
+```text
+harness/planning-notes/20261024-add-export/implementation-guide.md
+```
+
+The activation instructions ask the agent to record the refined request, applicable rule IDs, plan, evidence, report, and iteration notes there. Give the agent the task and ask it to follow the project’s `AGENTS.md` together with the package instructions.
+
+After the work, inspect the implementation guide and the actual changed files. Run the checks recorded in `harness/verdicts.md`, then update any affected project documentation. A task note is an evidence trail, not proof by itself that an implementation is correct.
+
+## Add a project-specific skill safely
+
+When a workflow repeats, add its short command to `harness/skills.md` and write the detailed steps in a matching file under `harness/skills/`. Keep the entry and file in sync. Include the workflow’s preconditions, expected output, and evidence of completion so another agent can follow it without relying on chat history.
+
+## Troubleshoot common setup problems
+
+| Symptom | What to check | Resolution |
+| --- | --- | --- |
+| The agent ignores the guide | Confirm the agent loads the instruction file where you placed the activation snippet. | Move or add the snippet to the instruction file that the selected agent surface actually reads. |
+| `npx pag` cannot find the command | Confirm you installed the package in this project and run commands from its root. | Run `npm install --save-dev production-agent-guide`, then retry. |
+| `doctor` reports missing harness files | Check the current directory and whether initialization completed. | From the project root, run `npx pag init` again; it adds missing files without replacing existing ones. |
+| `task` rejects the ID | The CLI expects a date followed by a short kebab-case slug. | Use a form such as `20261024-add-export`. |
+| Project decisions are not reflected | `init` creates a starter harness; it cannot infer every product decision. | Review `harness/verdicts.md`, send `pag-synchronise-project` to the agent, and review the resulting diff. |
+
+## Keep the harness useful
+
+Make the harness part of normal project maintenance:
+
+1. Record a decision when it affects future work.
+2. Synchronize after meaningful out-of-band changes.
+3. Review task notes and evidence before closing work.
+4. Re-run the project’s required QA checks when behavior changes.
+
+For a fresh installation, return to the [quickstart](/task-1/quickstart). For the documentation site implementation, read [how this site was built](/task-2/article).

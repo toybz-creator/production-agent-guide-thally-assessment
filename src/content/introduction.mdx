@@ -1,45 +1,38 @@
 ---
-title: Introduction
-description: Give readers a clear path from their first question to a result they can verify.
-mode: home
+title: Production Agent Guide
+description: A practical guide to installing and tailoring a durable engineering harness for AI coding agents.
 ---
 
-<Hero
-  title="Build documentation around the reader"
-  subtitle="Start with a useful first result, organize what follows, and publish every format from one reviewable source."
-  primaryLabel="Get started"
-  primaryHref="/quickstart"
-  secondaryLabel="Publish your docs"
-  secondaryHref="/guides/create-a-site"
-/>
+Production Agent Guide gives an AI coding agent a repeatable way to understand a software project, plan work, implement it, evaluate the result, and leave useful project knowledge behind.
 
-## Build the reader journey
+It is for developers and teams who use coding agents in an existing codebase and want their work to reflect project decisions, engineering standards, and verifiable evidence from one task to the next.
 
-Begin with the task that brings most readers to your documentation, then make
-the next useful step obvious.
+## What you get
 
-<CardGroup cols="2">
-  <Card title="Write your quickstart" icon="party-horn" href="/quickstart">
-    Turn prerequisites, setup, one realistic task, and verification into a short path.
-  </Card>
-  <Card title="Organize your navigation" icon="grid-round" href="/customization">
-    Group related tasks and references around how people use your product.
-  </Card>
-  <Card title="Document your API" icon="code-simple" href="/api">
-    Replace `openapi.yaml` to publish browsable endpoint docs with a live playground.
-  </Card>
-  <Card title="Learn the Thally workflow" icon="wrench" href="/guides/create-a-site">
-    Create, publish, and update sites from the Cloud dashboard, the CLI, or your AI tools.
-  </Card>
-</CardGroup>
+- A reusable instruction library with numbered `PAG-*` rules for production-focused engineering.
+- A six-stage workflow: Rewrite, Planning, Implementation, Evaluation, Feedback, and Iteration.
+- A project-specific `harness/` folder for decisions, product context, architecture, task records, and operating guidance.
+- A CLI that installs missing harness files and checks whether the package and harness are present.
 
-## Publish from one source
+The package is the shared baseline. The files in your project’s `harness/` folder hold the context that should survive package upgrades. Customize the harness for your product instead of editing files inside `node_modules/production-agent-guide/`.
 
-Thally turns the same reviewed content into HTML, search, agent discovery files,
-Markdown mirrors, and a read-only MCP surface — so people and AI tools read the
-same, current answer. Add only the locales your readers need.
+## How a task moves through the guide
 
-<Note type="info" title="Start with the product, not the template">
-  Replace this page with the questions, terminology, and workflows your readers
-  already use. Keep `docs.json` focused on the path between those tasks.
+<Mermaid>{`
+flowchart LR
+  A[Rewrite the request] --> B[Plan the work]
+  B --> C[Implement]
+  C --> D[Evaluate with evidence]
+  D --> E[Give feedback]
+  E --> F[Iterate and update project memory]
+`}</Mermaid>
+
+Use the [quickstart](/task-1/quickstart) to install and activate the package. Then follow the [harness customization guide](/task-1/practical-guide) to record project-specific decisions.
+
+## Product source and version
+
+These instructions were checked against the remote [`agent-guide` main branch](https://github.com/toybz-creator/agent-guide/tree/main) at commit `3e53591b8e63dbea273ab324b497b0c6bdc31112` and the published npm package `production-agent-guide@0.2.1`. That release declares Node.js `>=18`.
+
+<Note>
+The command examples target the published `0.2.1` package. Check `npx pag help` after upgrading, because the package CLI and its documentation can evolve independently.
 </Note>

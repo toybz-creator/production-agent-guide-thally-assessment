@@ -17,64 +17,29 @@
   },
   "navbar": {
     "primary": {
-      "label": "Get started",
-      "href": "/quickstart"
+      "label": "Install the guide",
+      "href": "/task-1/quickstart"
     }
   },
   "tabs": [
     {
-      "tab": "Get started",
+      "tab": "Production Agent Guide",
       "groups": [
         {
-          "group": "Get started",
+          "group": "Start here",
           "pages": [
             "introduction",
-            "quickstart"
+            "task-1/quickstart",
+            "task-1/practical-guide"
           ]
         },
         {
-          "group": "Design your docs",
+          "group": "Build this documentation site",
           "pages": [
-            "components",
-            "customization"
+            "task-2/article"
           ]
         }
       ]
-    },
-    {
-      "tab": "Guides",
-      "groups": [
-        {
-          "group": "Work with Thally",
-          "pages": [
-            "guides/create-a-site",
-            "guides/work-with-the-cli",
-            "guides/connect-ai-tools"
-          ]
-        }
-      ]
-    },
-    {
-      "tab": "API Reference",
-      "groups": [
-        {
-          "group": "Overview",
-          "pages": [
-            "api/introduction",
-            "api/authentication"
-          ]
-        }
-      ],
-      "api": {
-        "source": "openapi.yaml"
-      }
-    },
-    {
-      "tab": "Changelog",
-      "href": "/changelog"
     }
-  ],
-  "ai": {
-    "chat": true
-  }
+  ]
 }

@@ -1,0 +1,89 @@
+---
+title: Install and activate the guide
+description: Add Production Agent Guide to an existing project, create its harness, and verify the setup.
+---
+
+This quickstart installs Production Agent Guide in a project and checks that its starter harness is ready for you to customize.
+
+## Before you begin
+
+You need:
+
+| Requirement | Why it is needed |
+| --- | --- |
+| Node.js 18 or later | Runs the package CLI. |
+| npm | Installs the package and provides `npx`. |
+| A project repository | The CLI creates the harness in the current project. |
+| An agent instruction file | Your coding agent needs a file such as `AGENTS.md` that it actually reads. |
+
+Run the commands from your project root. If the project does not have a `package.json` yet, create one with `npm init -y`.
+
+## Install the package
+
+Add the published package as a development dependency:
+
+```bash
+npm install --save-dev production-agent-guide
+```
+
+You should now see `production-agent-guide` under `devDependencies` in `package.json`, with a lockfile updated by npm.
+
+## Activate it for your coding agent
+
+Ask the CLI to print the activation text:
+
+```bash
+npx pag snippet
+```
+
+Copy the output into the instruction file your agent loads, such as `AGENTS.md`, `.cursorrules`, or the equivalent for your tool. If that file already contains project rules, add the snippet without replacing the existing guidance.
+
+The activation text tells the agent to read `node_modules/production-agent-guide/instructions.md` and follow the guide’s task lifecycle. If you copied the package into the project instead of installing it, the path in the snippet must point to that copy.
+
+## Create the project harness
+
+Run initialization at the repository root:
+
+```bash
+npx pag init
+```
+
+`init` creates missing harness files and security scripts. It does not overwrite existing files. The new `harness/` directory gives the agent places to record project context, decisions, QA expectations, skills, and task notes.
+
+Review the defaults in `harness/verdicts.md`. Replace unset preferences with decisions that match your project, especially its strictness level and required QA profile. Then send your coding agent this prompt:
+
+```text
+pag-synchronise-project
+```
+
+This is a prompt for your agent, not a shell command. It asks the agent to compare the new harness with the repository and update project documentation from verified evidence.
+
+## Verify the installation
+
+Run the package doctor:
+
+```bash
+npx pag doctor
+```
+
+For a newly initialized project, the output should include successful checks for package files, numbered rules, and the harness, for example:
+
+```text
+Package files: ok
+Rule framework: ok (756 numbered rules)
+harness: ok
+```
+
+The rule count can change between package releases. `doctor` checks whether expected files and numbered rulebooks are present; it does not run your application’s tests or prove that the agent has understood your product.
+
+You can create a dated task record when you start a piece of work:
+
+```bash
+npx pag task --id 20261024-improve-sign-in --title "Improve sign-in"
+```
+
+Use the `YYYYMMDD-short-kebab-slug` form for the ID. The command creates `harness/planning-notes/<task-id>/implementation-guide.md`, which the agent can fill in as it works. The package’s README documents this command; if a newer CLI changes it, check `npx pag help` and the current package README.
+
+## Next step
+
+Continue with [customizing the harness](/task-1/practical-guide) so the agent has the decisions and operating context your team expects.
