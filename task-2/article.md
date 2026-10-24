@@ -19,7 +19,7 @@ Decide whether the source repository should be public or private before connecti
 
 ## Understand the publishing path
 
-Thally’s [Cloud-first quickstart](https://docs.thally.io/quickstart) can create the source repository from the dashboard and recommends an **All repositories** GitHub App grant for that flow. If you need access limited to one repository, scaffold locally and connect that existing repository instead. Grant the Thally app access only to the documentation repository when GitHub presents a repository-selection screen.
+Thally’s [Cloud-first quickstart](https://docs.thally.io/quickstart) can create the source repository from the dashboard and recommends an **All repositories** GitHub App grant for that flow. To limit the app’s selected-repository privileges, scaffold locally and connect that existing repository instead. Choose only the documentation repository when GitHub presents a repository selector. In this run, GitHub also stated that public repositories remain available to the app in read-only mode; selecting one repository limited write access to that repository, not read access to every other public repository. Review the current permission summary before approving.
 
 ```mermaid
 flowchart LR
@@ -184,7 +184,7 @@ After publishing, open the public site in a signed-out or private browser window
 
 ## Obstacles and how this build handled them
 
-The Cloud-first creation path is convenient, but its documented GitHub permission choice requests access to all repositories. This assessment needed a one-repository scope, so it used the CLI scaffold, created the source repository separately, and connected that repository in the dashboard. If the authorization UI does not offer a repository-only selection, stop and resolve the permission scope before continuing.
+The Cloud-first creation path is convenient, but its documented GitHub permission choice requests access to all repositories. This assessment used the CLI scaffold and connected its existing repository so the app’s selected-repository write access stayed on the docs repo. GitHub’s confirmation also stated that public repositories remain readable by the app; the one-repository selection did not remove that read-only access. If that scope is unsuitable for your organization, stop before installing the app. The scaffold and existing-repository connection add an extra setup step.
 
 During this setup, the first return from GitHub to Thally failed because `app.thally.io` did not resolve. Reopening the site setup and using **Check GitHub** to select the already-authorized `toybz-creator` account completed the connection; the repository picker then listed `toybz-creator/production-agent-guide-thally-assessment`. If the callback fails, retry the session check before creating another installation.
 
