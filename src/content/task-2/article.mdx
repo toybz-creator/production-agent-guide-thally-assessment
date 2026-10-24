@@ -189,6 +189,8 @@ After publishing, open the public site in a signed-out or private browser window
 
 The Cloud-first creation path is convenient, but its documented GitHub permission choice requests access to all repositories. This assessment needed a one-repository scope, so it used the CLI scaffold, created the source repository separately, and connected that repository in the dashboard. If the authorization UI does not offer a repository-only selection, stop and resolve the permission scope before continuing.
 
+During this setup, the first return from GitHub to Thally failed because `app.thally.io` did not resolve. Reopening the site setup and using **Check GitHub** to select the already-authorized `toybz-creator` account completed the connection; the repository picker then listed `toybz-creator/production-agent-guide-thally-assessment`. If the callback fails, retry the session check before creating another installation.
+
 The scaffold also includes sample pages and navigation for a general docs product. Leaving those examples in place would make the site feel unfinished and could leave unused pages outside the intended navigation. Remove the sample pages you do not use and keep the `docs.json` page list aligned with the authored files.
 
 During the sample-project check, `npx pag help` listed `init`, `doctor`, `skills`, `snippet`, and `help`, but did not list `task`. The published README nevertheless documents `npx pag task`; the command worked when given a date-prefixed ID. This site’s quickstart therefore treats task-note creation as optional and points readers to the README and ID format rather than making it a setup prerequisite.
