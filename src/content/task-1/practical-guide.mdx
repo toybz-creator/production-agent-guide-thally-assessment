@@ -42,23 +42,11 @@ The synchronization workflow compares the harness with the current project and u
 
 Review the resulting diff. Keep facts that can be checked in the repository, and correct assumptions before they become durable project context. Synchronization documents the project; it does not replace tests, code review, or operational checks.
 
-## Create and complete a task record
+## How the agent records implementation work
 
-For a concrete implementation task, create a planning note with a date-prefixed kebab-case ID:
+With the package activation snippet in an instruction file your agent reads and the harness initialized, each implementation task gets a task-specific guide. Before coding, the agent is instructed to create or resume `harness/planning-notes/<task-id>/implementation-guide.md`. It keeps the refined request, relevant rule IDs, plan, decisions, evidence, report, and iteration notes together in the repository so the work can be reviewed and resumed without relying on chat history.
 
-```bash
-npx pag task --id 20261024-add-export --title "Add data export"
-```
-
-The command creates:
-
-```text
-harness/planning-notes/20261024-add-export/implementation-guide.md
-```
-
-The activation instructions ask the agent to record the refined request, applicable rule IDs, plan, evidence, report, and iteration notes there. Give the agent the task and ask it to follow the project’s `AGENTS.md` together with the package instructions.
-
-After the work, inspect the implementation guide and the actual changed files. Run the checks recorded in `harness/verdicts.md`, then update any affected project documentation. A task note is an evidence trail, not proof by itself that an implementation is correct.
+Review the guide alongside the actual changed files, then run the checks recorded in `harness/verdicts.md`. The guide is an evidence trail, not proof by itself that the implementation is correct.
 
 ## Add a project-specific skill safely
 
@@ -71,7 +59,6 @@ When a workflow repeats, add its short command to `harness/skills.md` and write 
 | The agent ignores the guide | Confirm the agent loads the instruction file where you placed the activation snippet. | Move or add the snippet to the instruction file that the selected agent surface actually reads. |
 | `npx pag` cannot find the command | Confirm you installed the package in this project and run commands from its root. | Run `npm install --save-dev production-agent-guide`, then retry. |
 | `doctor` reports missing harness files | Check the current directory and whether initialization completed. | From the project root, run `npx pag init` again; it adds missing files without replacing existing ones. |
-| `task` rejects the ID | The CLI expects a date followed by a short kebab-case slug. | Use a form such as `20261024-add-export`. |
 | Project decisions are not reflected | `init` creates a starter harness; it cannot infer every product decision. | Review `harness/verdicts.md`, send `pag-synchronise-project` to the agent, and review the resulting diff. |
 
 ## Keep the harness useful
