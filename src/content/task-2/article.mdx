@@ -193,7 +193,7 @@ During this setup, the first return from GitHub to Thally failed because `app.th
 
 The scaffold also includes sample pages and navigation for a general docs product. Leaving those examples in place would make the site feel unfinished and could leave unused pages outside the intended navigation. Remove the sample pages you do not use and keep the `docs.json` page list aligned with the authored files.
 
-During the sample-project check, `npx pag help` listed `init`, `doctor`, `skills`, `snippet`, and `help`, but did not list `task`. The published README nevertheless documents `npx pag task`; the command worked when given a date-prefixed ID. This site’s quickstart therefore treats task-note creation as optional and points readers to the README and ID format rather than making it a setup prerequisite.
+During the sample-project check, `npx pag help` listed `init`, `doctor`, `skills`, `snippet`, and `help`, but did not list `task`. The published README nevertheless documents `npx pag task`; the command worked when given a date-prefixed ID. Since the task-note command is optional and absent from CLI help, the final quickstart omits it and explains how the agent uses the harness rules while implementing assigned tasks.
 
 The production build completed, but the scaffold also logged that embeddings generation was skipped because a module crossed a Client Component boundary, and Next.js warned that the middleware convention is deprecated. Those messages did not block the docs build. I left the Thally-owned runtime files as generated and recorded the warnings for follow-up against a future starter release.
 
