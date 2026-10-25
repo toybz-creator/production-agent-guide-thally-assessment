@@ -76,13 +76,7 @@ harness: ok
 
 The rule count can change between package releases. `doctor` checks whether expected files and numbered rulebooks are present; it does not run your application’s tests or prove that the agent has understood your product.
 
-You can create a dated task record when you start a piece of work:
-
-```bash
-npx pag task --id 20261024-improve-sign-in --title "Improve sign-in"
-```
-
-Use the `YYYYMMDD-short-kebab-slug` form for the ID. The command creates `harness/planning-notes/<task-id>/implementation-guide.md`, which the agent can fill in as it works. The package’s README documents this command; if a newer CLI changes it, check `npx pag help` and the current package README.
+> **Info:** With the package activated and the harness initialized, the agent can now use the harness rules when you assign implementation tasks. It reads the relevant project instructions and context, then follows them as it plans and carries out the work. Review its changes and run your usual checks before merging; the harness guides the agent but does not execute tasks on its own.
 
 ## Next step
 
