@@ -11,7 +11,7 @@ Have these ready:
 | Requirement | Why it helps |
 | --- | --- |
 | A Thally account | Creates and publishes the documentation site. |
-| Git, a GitHub account, and a repository plan | Stores the docs source and connects it to Thally Cloud. |
+| Git and a GitHub account | Stores the docs source and connects it to Thally Cloud. |
 | Node.js and npm | Runs the Thally scaffold, local checks, and preview. Use versions supported by the current scaffold. |
 | A short outline of your reader’s first task | Keeps the first release focused on a useful journey instead of a feature inventory. |
 
@@ -41,7 +41,7 @@ flowchart LR
 
 ## 2. Choose a Thally setup path that fits your access needs
 
-In the Cloud-first quickstart we followed, Thally recommended the shortest route: start in the dashboard, create a repository, and grant the GitHub App access to **All repositories**. That is convenient when the scope fits your account. For this assessment, I wanted the app’s write access selected for one documentation repository, so I scaffolded locally and connected that existing repository in Thally Cloud.
+In the [Cloud-first quickstart](https://docs.thally.io/quickstart) we followed, Thally recommended the shortest route: start in the dashboard, create a repository, and grant the GitHub App access to **All repositories**. That is convenient when the scope fits your account. For this assessment, I wanted the app’s write access selected for one documentation repository, so I scaffolded locally and connected that existing repository in Thally Cloud.
 
 There’s one permission detail to check carefully: the GitHub installation screen stated that public repositories remain readable by the app even when write access is selected for one repository. A one-repository selection limited write access; it did not remove read-only access to other public repositories. Review the current permission summary before you approve the connection.
 
